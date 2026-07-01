@@ -1,0 +1,6 @@
+{
+  "name": "Property History Search",
+  "description": "Secure property transaction history search engine with Stripe paywall and backend verification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
