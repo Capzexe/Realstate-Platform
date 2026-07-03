@@ -61,56 +61,45 @@ if (stripe) {
 }
 
 
-// In-memory property store (emulating a secure Supabase / Private Database)
-interface Transaction {
-  id: string;
-  date: string;
-  price: number;
-  type: 'Sale' | 'Tax Assessment' | 'Foreclosure' | 'Refinance';
-  buyer?: string;
-  seller?: string;
-  documentNumber: string;
-}
-
-interface TaxRecord {
-  year: number;
-  landValue: number;
-  buildingValue: number;
-  totalValue: number;
-  taxAmount: number;
-}
-
-interface ComparableSale {
+// Row type matching the property_transactions table in Supabase
+interface PropertyTransactionRow {
+  id: number;
+  transaction_id: number;
+  transaction_count: number;
+  transaction_date: string;
+  price_eur: number;
+  object_type: string;
   address: string;
-  price: number;
-  date: string;
-  beds: number;
-  baths: number;
-  sqft: number;
-  distanceMiles: number;
-}
-
-interface PropertyReport {
-  id: string;
-  address: string;
+  county: string;
   city: string;
-  state: string;
-  zip: string;
-  beds: number;
-  baths: number;
-  sqft: number;
-  yearBuilt: number;
-  propertyType: string;
-  teaserImage: string;
-  price: number;
-  estimatedValue: number;
-  ownerName: string;
-  history: Transaction[];
-  taxHistory: TaxRecord[];
-  comparableSales: ComparableSale[];
+  parish: string;
+  property_cadastre_nr: string;
+  land_cadastre_nrs: string;
+  land_share_numerator: number;
+  land_share_denominator: number;
+  land_area_m2: number;
+  nilm_group_code: string;
+  nilm_codes: string;
+  building_count: string;
+  building_cadastre_nr: string;
+  building_use_type: string;
+  building_use_code: string;
+  building_floors: string;
+  building_footprint_m2: string;
+  building_area_m2: string;
+  building_volume_m3: string;
+  wall_material: string;
+  construction_year: string;
+  depreciation: string;
+  all_building_cadastre_nrs: string;
+  apartment_area_m2: string;
+  room_count: string;
+  bedroom_count: string;
+  xml_wall_material: string;
+  [key: string]: any;
 }
 
-const PROPERTIES_DB: Record<string, PropertyReport> = {
+const PROPERTIES_DB: Record<string, any> = {
   "prop_1": {
     id: "prop_1",
     address: "123 Main St",
@@ -222,185 +211,89 @@ function evictExpiredPaidReports() {
   }
 }
 
-// Helper to generate a random mock property dynamically if the user searches an address not in our core list
-function generateDynamicMockProperty(address: string): PropertyReport {
-  const cleanAddress = address.trim();
-  const id = `prop_dyn_${Buffer.from(cleanAddress).toString('hex').slice(0, 10)}`;
-  
-  // Randomizer parameters based on address hash to keep it consistent
-  let hash = 0;
-  for (let i = 0; i < cleanAddress.length; i++) {
-    hash = cleanAddress.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  hash = Math.abs(hash);
+// generateDynamicMockProperty removed — data is now served live from property_transactions
 
-  const beds = (hash % 3) + 2; // 2, 3, 4
-  const baths = (hash % 2) === 0 ? beds - 1 : beds - 0.5; // realistic bed/bath ratio
-  const sqft = ((hash % 15) * 150) + 1100; // 1100 to 3200 sqft
-  const yearBuilt = 1950 + (hash % 70); // 1950 to 2020
-  const price = ((hash % 180) * 10000) + 320000; // $320,000 to $2,120,000
-  const estimatedValue = Math.round(price * (1 + ((hash % 10) / 100))); // estimate slightly higher
-  
-  // Choose random stock imagery
-  const images = [
-    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&q=80&w=600",
-    "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&q=80&w=600"
-  ];
-  const teaserImage = images[hash % images.length];
-
-  const states = ["NY", "CA", "TX", "FL", "IL", "WA", "MA", "GA"];
-  const cities = ["New York", "Los Angeles", "Austin", "Miami", "Chicago", "Seattle", "Boston", "Atlanta"];
-  const chosenIdx = hash % states.length;
-
-  const zip = String(10000 + (hash % 80000)).padStart(5, '0');
-
-  const history: Transaction[] = [
-    {
-      id: `tx_dyn_1`,
-      date: `2024-${String((hash % 11) + 1).padStart(2, '0')}-${String((hash % 25) + 1).padStart(2, '0')}`,
-      price: price,
-      type: 'Sale',
-      buyer: `Purchaser ${hash % 100}`,
-      seller: `Owner family LLC`,
-      documentNumber: `DOC-2024-${hash % 90000 + 10000}`
-    },
-    {
-      id: `tx_dyn_2`,
-      date: `2017-${String((hash % 11) + 1).padStart(2, '0')}-${String((hash % 25) + 1).padStart(2, '0')}`,
-      price: Math.round(price * 0.72),
-      type: 'Sale',
-      buyer: `Owner family LLC`,
-      seller: `Predecessor estate`,
-      documentNumber: `DOC-2017-${hash % 90000 + 10000}`
-    }
-  ];
-
-  const taxHistory: TaxRecord[] = [
-    { year: 2025, landValue: Math.round(price * 0.3), buildingValue: Math.round(price * 0.7), totalValue: price, taxAmount: Math.round(price * 0.011) },
-    { year: 2024, landValue: Math.round(price * 0.29), buildingValue: Math.round(price * 0.68), totalValue: Math.round(price * 0.97), taxAmount: Math.round(price * 0.011 * 0.97) }
-  ];
-
-  const comparableSales: ComparableSale[] = [
-    { address: `Nearby ${hash % 100} Ave, ${cities[chosenIdx]}, ${states[chosenIdx]}`, price: Math.round(price * 0.98), date: "2025-02-14", beds, baths, sqft: Math.round(sqft * 0.95), distanceMiles: 0.15 },
-    { address: `Adjoining ${hash % 50} Road, ${cities[chosenIdx]}, ${states[chosenIdx]}`, price: Math.round(price * 1.05), date: "2025-04-10", beds, baths: baths + 0.5, sqft: Math.round(sqft * 1.08), distanceMiles: 0.3 }
-  ];
-
-  return {
-    id,
-    address: cleanAddress,
-    city: cities[chosenIdx],
-    state: states[chosenIdx],
-    zip,
-    beds,
-    baths,
-    sqft,
-    yearBuilt,
-    propertyType: "Single Family Residence",
-    teaserImage,
-    price,
-    estimatedValue,
-    ownerName: `Owner Trust #${hash % 500}`,
-    history,
-    taxHistory,
-    comparableSales
-  };
-}
-
-// ENDPOINT 1: Secure Search Property
-// Input: address_query
-// Returns: Teaser representation without structural price metadata (protects data before purchase)
+// ENDPOINT 1: Search property_transactions table
 app.post("/api/search-property", async (req, res) => {
   const { address_query } = req.body;
   if (!address_query || typeof address_query !== "string") {
-    return res.status(400).json({ found: false, error: "Valid property address is required" });
+    return res.status(400).json({ found: false, error: "Nepieciešama derīga īpašuma adrese" });
   }
   if (address_query.trim().length > 200) {
-    return res.status(400).json({ found: false, error: "Address query is too long." });
+    return res.status(400).json({ found: false, error: "Meklēšanas vaicājums ir pārāk garš." });
+  }
+  if (!supabase) {
+    return res.status(503).json({ found: false, error: "Datubāze nav konfigurēta." });
   }
 
-  const query = address_query.trim().toLowerCase();
-  let matchedProp: PropertyReport | undefined;
+  // Strip ILIKE wildcards to prevent pattern injection; split on comma to allow "Street, City" searches
+  const parts = address_query.trim().split(/,\s*/);
+  const mainQuery = parts[0].replace(/[%_]/g, '').trim();
+  const cityQuery = parts[1]?.replace(/[%_]/g, '').trim() || '';
 
-  // 1. Try querying Supabase if initialized
-  if (supabase) {
-    try {
-      // Strip ILIKE wildcards from user input to prevent pattern injection
-      const safeQuery = address_query.trim().replace(/[%_]/g, '');
-
-      // Only select the 11 teaser columns — never fetch price/history/JSONB during a search.
-      // Full data is only loaded after payment is verified in /api/get-report.
-      const { data, error } = await supabase
-        .from("properties")
-        .select("id, address, city, state, zip, beds, baths, sqft, year_built, property_type, teaser_image")
-        .or(`address.ilike.%${safeQuery}%,city.ilike.%${safeQuery}%,zip.eq.${safeQuery}`)
-        .limit(1);
-
-      if (error) {
-        console.error("Supabase query error:", error);
-      } else if (data && data.length > 0) {
-        const row = data[0];
-        // Build a teaser-only object. Sensitive fields left empty — filled later by get-report.
-        matchedProp = {
-          id: row.id,
-          address: row.address,
-          city: row.city,
-          state: row.state,
-          zip: row.zip,
-          beds: row.beds,
-          baths: Number(row.baths),
-          sqft: row.sqft,
-          yearBuilt: row.year_built,
-          propertyType: row.property_type,
-          teaserImage: row.teaser_image,
-          price: 0,
-          estimatedValue: 0,
-          ownerName: "",
-          history: [],
-          taxHistory: [],
-          comparableSales: []
-        };
-        // Don't cache in PROPERTIES_DB — full data will be fetched from Supabase on get-report
-        console.log(`[Supabase] Found property: ${matchedProp.address}`);
-      }
-    } catch (err) {
-      console.error("Error connecting to Supabase table:", err);
-    }
+  if (!mainQuery) {
+    return res.status(400).json({ found: false, error: "Nepieciešama derīga īpašuma adrese" });
   }
 
-  // 2. Fallback to direct search in pre-defined PROPERTIES_DB
-  if (!matchedProp) {
-    matchedProp = Object.values(PROPERTIES_DB).find(
-      p => p.address.toLowerCase().includes(query) || query.includes(p.address.toLowerCase())
-    );
+  // Fetch only teaser columns — price is never included here
+  let dbQuery = supabase
+    .from("property_transactions")
+    .select("id, transaction_date, object_type, address, county, city, parish, property_cadastre_nr, land_area_m2, building_area_m2, building_floors, construction_year, wall_material, room_count, xml_wall_material")
+    .or(`address.ilike.%${mainQuery}%,property_cadastre_nr.ilike.%${mainQuery}%`);
+
+  if (cityQuery) {
+    dbQuery = dbQuery.ilike('city', `%${cityQuery}%`);
+  } else {
+    // Also allow city/county match when no comma separator given
+    dbQuery = supabase
+      .from("property_transactions")
+      .select("id, transaction_date, object_type, address, county, city, parish, property_cadastre_nr, land_area_m2, building_area_m2, building_floors, construction_year, wall_material, room_count, xml_wall_material")
+      .or(`address.ilike.%${mainQuery}%,city.ilike.%${mainQuery}%,county.ilike.%${mainQuery}%,property_cadastre_nr.ilike.%${mainQuery}%`);
   }
 
-  // 3. Generate dynamic fallback if still not found
-  if (!matchedProp) {
-    matchedProp = generateDynamicMockProperty(address_query);
-    // Cap in-memory store at 500 entries to prevent memory exhaustion
-    if (Object.keys(PROPERTIES_DB).length < 500) {
-      PROPERTIES_DB[matchedProp.id] = matchedProp;
-    }
+  const { data, error } = await dbQuery
+    .order("transaction_date", { ascending: false })
+    .limit(1);
+
+  if (error) {
+    console.error("[Search] Supabase error:", error);
+    return res.status(500).json({ found: false, error: "Datubāzes vaicājuma kļūda." });
   }
 
-  // Strip secret transactional fields. Returning only safe teaser fields.
+  if (!data || data.length === 0) {
+    return res.json({ found: false, error: "Nevar atrast īpašumu ar šādu adresi." });
+  }
+
+  const row = data[0];
+
+  // Count all transactions for this cadastre number
+  let transactionCount = 1;
+  if (row.property_cadastre_nr) {
+    const { count } = await supabase
+      .from("property_transactions")
+      .select("*", { count: "exact", head: true })
+      .eq("property_cadastre_nr", row.property_cadastre_nr);
+    transactionCount = count || 1;
+  }
+
   const teaser = {
-    id: matchedProp.id,
-    address: matchedProp.address,
-    city: matchedProp.city,
-    state: matchedProp.state,
-    zip: matchedProp.zip,
-    beds: matchedProp.beds,
-    baths: matchedProp.baths,
-    sqft: matchedProp.sqft,
-    yearBuilt: matchedProp.yearBuilt,
-    propertyType: matchedProp.propertyType,
-    teaserImage: matchedProp.teaserImage
+    id: String(row.id),
+    address: row.address || "",
+    city: row.city || "",
+    county: row.county || "",
+    parish: row.parish || "",
+    object_type: row.object_type || "",
+    building_area_m2: row.building_area_m2 || "",
+    construction_year: row.construction_year || "",
+    wall_material: row.wall_material || row.xml_wall_material || "",
+    building_floors: row.building_floors || "",
+    room_count: row.room_count || "",
+    land_area_m2: row.land_area_m2 || 0,
+    latest_transaction_date: row.transaction_date || "",
+    transaction_count: transactionCount,
   };
 
+  console.log(`[Search] Found: ${teaser.address}, ${transactionCount} darījumi`);
   return res.json({ found: true, property: teaser });
 });
 
@@ -415,43 +308,30 @@ app.post("/api/create-checkout-session", async (req, res) => {
     return res.status(400).json({ error: "Invalid property ID." });
   }
 
-  // Find property in local cache or load from Supabase if not present
-  let property = PROPERTIES_DB[property_id];
-  if (!property && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from("properties")
-        .select("*")
-        .eq("id", property_id)
-        .single();
-      if (data && !error) {
-        property = {
-          id: data.id,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zip: data.zip,
-          beds: data.beds,
-          baths: Number(data.baths),
-          sqft: data.sqft,
-          yearBuilt: data.year_built,
-          propertyType: data.property_type,
-          teaserImage: data.teaser_image,
-          price: Number(data.price),
-          estimatedValue: Number(data.estimated_value),
-          ownerName: data.owner_name,
-          history: data.history || [],
-          taxHistory: data.tax_history || [],
-          comparableSales: data.comparable_sales || []
-        };
-        PROPERTIES_DB[property_id] = property;
-      }
-    } catch (err) {
-      console.error("Supabase load error during checkout session creation:", err);
+  // Look up the transaction row to get the property address for Stripe
+  let propertyAddress = `Īpašums #${property_id}`;
+  let propertyCity = "";
+  if (supabase) {
+    const { data } = await supabase
+      .from("property_transactions")
+      .select("address, city")
+      .eq("id", property_id)
+      .single();
+    if (data) {
+      propertyAddress = data.address || propertyAddress;
+      propertyCity = data.city || "";
     }
   }
 
-  if (!property) {
+  if (!supabase) {
+    return res.status(503).json({ error: "Datubāze nav konfigurēta." });
+  }
+  const { data: existsCheck, error: existsErr } = await supabase
+    .from("property_transactions")
+    .select("id")
+    .eq("id", property_id)
+    .single();
+  if (existsErr || !existsCheck) {
     return res.status(404).json({ error: "Property ID not found" });
   }
 
@@ -469,8 +349,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
             price_data: {
               currency: "eur",
               product_data: {
-                name: `Zemesgrāmatas aktu nodošanas ierakstu sertifikāts - ${property.address}`,
-                description: `Pilna hronoloģiskā darījumu vērtību atskaite un īpašnieku vēsture adresē: ${property.address}, ${property.city}`,
+                name: `Darījumu vēstures atskaite - ${propertyAddress}`,
+                description: `Pilna hronoloģiskā darījumu vērtību atskaite adresē: ${propertyAddress}${propertyCity ? ", " + propertyCity : ""}`,
               },
               unit_amount: 999, // 9.99 EUR
             },
@@ -534,14 +414,14 @@ app.post("/api/webhook/stripe", async (req, res) => {
         timestamp: Date.now(),
         singleUseToken
       };
-      if (supabase) {
+        if (supabase) {
         const { error } = await supabase.from("paid_sessions").upsert({
-          session_id: session.id,
-          property_id: propertyId,
-          single_use_token: singleUseToken
-        });
-        if (error) console.error("[Stripe Webhook] Supabase paid_sessions insert error:", error);
-      }
+            session_id: session.id,
+            property_id: propertyId,
+            single_use_token: singleUseToken
+          });
+          if (error && error.code !== 'PGRST205') console.error("[Stripe Webhook] Supabase paid_sessions insert error:", error);
+        }
       console.log(`[Stripe Webhook] Verified real Stripe payment completed for Property: ${propertyId}`);
     }
     return res.json({ received: true });
@@ -569,7 +449,7 @@ app.post("/api/webhook/stripe", async (req, res) => {
         property_id,
         single_use_token: singleUseToken
       });
-      if (error) console.error("[Webhook] Supabase paid_sessions insert error:", error);
+      if (error && error.code !== 'PGRST205') console.error("[Webhook] Supabase paid_sessions insert error:", error);
     }
     console.log(`[Webhook] Payment verified via secure simulated webhook for property: ${property_id}`);
     return res.json({ received: true, simulated: true, token: singleUseToken });
@@ -650,51 +530,66 @@ app.get("/api/get-report", async (req, res) => {
     });
   }
 
-  // Fetch report: first from memory, fallback to Supabase if available
-  let fullReport = PROPERTIES_DB[property_id as string];
-  if (!fullReport && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from("properties")
-        .select("*")
-        .eq("id", property_id)
-        .single();
-      if (data && !error) {
-        fullReport = {
-          id: data.id,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zip: data.zip,
-          beds: data.beds,
-          baths: Number(data.baths),
-          sqft: data.sqft,
-          yearBuilt: data.year_built,
-          propertyType: data.property_type,
-          teaserImage: data.teaser_image,
-          price: Number(data.price),
-          estimatedValue: Number(data.estimated_value),
-          ownerName: data.owner_name,
-          history: data.history || [],
-          taxHistory: data.tax_history || [],
-          comparableSales: data.comparable_sales || []
-        };
-        PROPERTIES_DB[property_id as string] = fullReport;
-      }
-    } catch (err) {
-      console.error("Supabase load error during report fetch:", err);
-    }
+  // Fetch full report from property_transactions table
+  if (!supabase) {
+    return res.status(503).json({ success: false, error: "Datubāze nav konfigurēta." });
   }
 
-  if (!fullReport) {
-    return res.status(404).json({ success: false, error: "Property report details not found." });
+  // Fetch the anchor row
+  const { data: anchor, error: anchorErr } = await supabase
+    .from("property_transactions")
+    .select("*")
+    .eq("id", property_id)
+    .single();
+
+  if (anchorErr || !anchor) {
+    return res.status(404).json({ success: false, error: "Īpašums nav atrasts." });
   }
 
-  // Return full report securely. Now the price and full history are delivered!
-  return res.json({
-    success: true,
-    report: fullReport
-  });
+  // Fetch all transactions for the same cadastre number
+  let allTransactions: PropertyTransactionRow[] = [anchor];
+  if (anchor.property_cadastre_nr) {
+    const { data: txs } = await supabase
+      .from("property_transactions")
+      .select("*")
+      .eq("property_cadastre_nr", anchor.property_cadastre_nr)
+      .order("transaction_date", { ascending: false });
+    if (txs && txs.length > 0) allTransactions = txs;
+  }
+
+  const report = {
+    id: String(anchor.id),
+    address: anchor.address || "",
+    city: anchor.city || "",
+    county: anchor.county || "",
+    parish: anchor.parish || "",
+    object_type: anchor.object_type || "",
+    building_area_m2: anchor.building_area_m2 || "",
+    construction_year: anchor.construction_year || anchor.xml_construction_year || "",
+    wall_material: anchor.wall_material || anchor.xml_wall_material || "",
+    building_floors: anchor.building_floors || "",
+    room_count: anchor.room_count || "",
+    land_area_m2: anchor.land_area_m2 || 0,
+    latest_transaction_date: anchor.transaction_date || "",
+    transaction_count: allTransactions.length,
+    transactions: allTransactions,
+    property_cadastre_nr: anchor.property_cadastre_nr || "",
+    land_cadastre_nrs: anchor.land_cadastre_nrs || "",
+    building_footprint_m2: anchor.building_footprint_m2 || "",
+    building_volume_m3: anchor.building_volume_m3 || "",
+    building_use_type: anchor.building_use_type || "",
+    building_use_code: anchor.building_use_code || "",
+    depreciation: anchor.depreciation || "",
+    apartment_area_m2: anchor.apartment_area_m2 || "",
+    bedroom_count: anchor.bedroom_count || "",
+    nilm_group_code: anchor.nilm_group_code || "",
+    nilm_codes: anchor.nilm_codes || "",
+    building_cadastre_nr: anchor.building_cadastre_nr || "",
+    all_building_cadastre_nrs: anchor.all_building_cadastre_nrs || "",
+  };
+
+  console.log(`[Report] Delivering ${allTransactions.length} darījumi for ${anchor.address}`);
+  return res.json({ success: true, report });
 });
 
 // API helper to check if a specific session is already paid

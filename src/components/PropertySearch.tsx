@@ -23,9 +23,9 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
   };
 
   const sampleProperties = [
-    { address: "123 Main St, New York, NY", city: "Ņujorka", badge: "Galvenais reģistrs" },
-    { address: "456 Oak Ave, Los Angeles, CA", city: "Losandželosa", badge: "Rietumkrasts" },
-    { address: "789 Pine Rd, Chicago, IL", city: "Čikāga", badge: "Vēsturisks akts" }
+    { address: "Brīvības iela 1, Rīga", city: "Rīga", badge: "Rīgas rajons" },
+    { address: "Valdemāra iela 1, Rīga", city: "Rīga", badge: "Rīga" },
+    { address: "Krišjāņa Valdemāra 5, Rīga", city: "Rīga", badge: "Centrs" }
   ];
 
   return (
@@ -51,7 +51,7 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
           </h1>
 
           <p className="text-slate-500 text-base sm:text-lg mb-10 leading-relaxed">
-            Droša, nerediģēta piekļuve darījumu vēsturei un aktu novērtējumiem vairāk nekā 140 miljoniem dzīvojamo īpašumu Amerikas Savienotajās Valstīs.
+            Droša, nerediģēta piekļuve darījumu vēsturei un reģistrētajiem aktiem Latvijas nekustamā īpašuma tirgū.
           </p>
 
           {/* Elegant Search Bar */}
@@ -68,7 +68,7 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
               id="property-address-input"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ievadiet īpašuma adresi (piemēram, 123 Main St, New York, NY)"
+              placeholder="Ievadiet īpašuma adresi (piemēram, Brīvības iela 1, Rīga)"
               className="w-full pl-14 pr-32 py-5.5 bg-slate-50 border-2 border-slate-100 rounded-2xl text-slate-800 placeholder-slate-400 font-medium focus:outline-none focus:border-indigo-600 focus:bg-white transition-all shadow-sm text-sm sm:text-base"
               disabled={isLoading}
             />
@@ -121,7 +121,7 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
                     {prop.address.split(",")[0]}
                   </p>
                   <p className="text-[10px] text-slate-400">
-                    {prop.city}, {prop.address.split(",")[2]?.trim() || "USA"}
+                    {prop.city}
                   </p>
                 </button>
               ))}
@@ -132,7 +132,7 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
           <div className="flex items-center gap-4 text-[11px] text-slate-400 font-sans border-t border-slate-100 pt-6 uppercase tracking-wider">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-              99.8% Pārklājums
+              Latvija
             </span>
             <span className="h-1 w-1 bg-slate-300 rounded-full"></span>
             <span>Oficiāli reģistra dati</span>
@@ -153,8 +153,8 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
               <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-2 font-mono">
                 Atrasts darījumu ieraksts
               </div>
-              <h2 className="text-2xl font-serif font-bold text-slate-900 leading-tight mb-1">123 Main Street</h2>
-              <p className="text-slate-400 text-xs">New York, NY 10001</p>
+              <h2 className="text-2xl font-serif font-bold text-slate-900 leading-tight mb-1">Brīvības iela 1</h2>
+              <p className="text-slate-400 text-xs">Rīga, Latvija</p>
             </div>
             
             <div className="px-8 py-5 bg-slate-50/80 border-y border-slate-100 space-y-4">
@@ -183,7 +183,7 @@ export default function PropertySearch({ onSearch, isLoading }: PropertySearchPr
             <div className="p-8">
               <button 
                 type="button"
-                onClick={() => selectSample("123 Main St, New York, NY")}
+                onClick={() => selectSample("Brīvības iela 1, Rīga")}
                 className="w-full py-4 bg-slate-950 text-white font-bold rounded-2xl hover:bg-black transition-all active:scale-[0.98] mb-4 flex items-center justify-center gap-2 cursor-pointer text-xs uppercase tracking-widest"
               >
                 <Lock className="w-4 h-4 text-emerald-400" />
