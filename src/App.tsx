@@ -5,11 +5,15 @@ import PropertySearch from "./components/PropertySearch";
 import PropertyTeaser from "./components/PropertyTeaser";
 import PropertyReport from "./components/PropertyReport";
 import CheckoutSimulator from "./components/CheckoutSimulator";
+import CenasPage from "./components/CenasPage";
+import AtskaitesPage from "./components/AtskaitesPage";
+import ParMusPage from "./components/ParMusPage";
+import KontaktiPage from "./components/KontaktiPage";
 import { PropertyTeaser as TeaserType, PropertyReport as ReportType } from "./types";
-import { AlertCircle, HelpCircle, ShieldCheck } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
-type PageState = "home" | "teaser" | "checkout" | "report";
+type PageState = "home" | "teaser" | "checkout" | "report" | "cenas" | "atskaites" | "par-mums" | "kontakti";
 
 export default function App() {
   const [page, setPage] = useState<PageState>("home");
@@ -140,6 +144,12 @@ export default function App() {
     setError(null);
   };
 
+  const handleNavigate = (p: string) => {
+    setPage(p as PageState);
+    setError(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const handleCancelCheckout = () => {
     setPage("teaser");
     setSessionId(null);
@@ -150,7 +160,12 @@ export default function App() {
     <div className="min-h-screen bg-[#faf9f6] flex flex-col justify-between selection:bg-slate-900 selection:text-white">
       
       {page !== "checkout" && (
-        <Navbar onGoHome={handleGoHome} sessionActive={page === "report"} />
+        <Navbar
+          onGoHome={handleGoHome}
+          onNavigate={handleNavigate}
+          activePage={page}
+          sessionActive={page === "report"}
+        />
       )}
 
       {/* Dismissible Error Notification Panel */}
@@ -204,6 +219,11 @@ export default function App() {
             onGoBack={handleGoHome} 
           />
         )}
+
+        {page === "cenas" && <CenasPage onSearch={handleGoHome} />}
+        {page === "atskaites" && <AtskaitesPage onSearch={handleGoHome} />}
+        {page === "par-mums" && <ParMusPage />}
+        {page === "kontakti" && <KontaktiPage />}
       </main>
 
       {page !== "checkout" && <Footer />}
