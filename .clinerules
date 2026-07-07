@@ -1,0 +1,6 @@
+# Never read, scan, or index the following directories:
+node_modules/
+.git/
+dist/
+build/
+.next/
