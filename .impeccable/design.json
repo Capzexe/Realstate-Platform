@@ -1,0 +1,325 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T10:15:25Z",
+  "title": "Design System: VeriSale",
+  "extensions": {
+    "colorMeta": {
+      "green": {
+        "role": "primary",
+        "displayName": "Forest Green",
+        "canonical": "#173d2e",
+        "tonalRamp": [
+          "oklch(15% 0.0514 164.90)",
+          "oklch(26.43% 0.0514 164.90)",
+          "oklch(37.86% 0.0514 164.90)",
+          "oklch(49.29% 0.0514 164.90)",
+          "oklch(60.71% 0.0514 164.90)",
+          "oklch(72.14% 0.0514 164.90)",
+          "oklch(83.57% 0.0514 164.90)",
+          "oklch(95% 0.0514 164.90)"
+        ]
+      },
+      "green-hover": {
+        "role": "primary",
+        "displayName": "Open Forest",
+        "canonical": "#285b44",
+        "tonalRamp": [
+          "oklch(15% 0.0676 162.06)",
+          "oklch(26.43% 0.0676 162.06)",
+          "oklch(37.86% 0.0676 162.06)",
+          "oklch(49.29% 0.0676 162.06)",
+          "oklch(60.71% 0.0676 162.06)",
+          "oklch(72.14% 0.0676 162.06)",
+          "oklch(83.57% 0.0676 162.06)",
+          "oklch(95% 0.0676 162.06)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Forest Ink",
+        "canonical": "#21392e",
+        "tonalRamp": [
+          "oklch(15% 0.0361 163.74)",
+          "oklch(26.43% 0.0361 163.74)",
+          "oklch(37.86% 0.0361 163.74)",
+          "oklch(49.29% 0.0361 163.74)",
+          "oklch(60.71% 0.0361 163.74)",
+          "oklch(72.14% 0.0361 163.74)",
+          "oklch(83.57% 0.0361 163.74)",
+          "oklch(95% 0.0361 163.74)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Quiet Green Grey",
+        "canonical": "#5e6e64",
+        "tonalRamp": [
+          "oklch(15% 0.0248 158.01)",
+          "oklch(26.43% 0.0248 158.01)",
+          "oklch(37.86% 0.0248 158.01)",
+          "oklch(49.29% 0.0248 158.01)",
+          "oklch(60.71% 0.0248 158.01)",
+          "oklch(72.14% 0.0248 158.01)",
+          "oklch(83.57% 0.0248 158.01)",
+          "oklch(95% 0.0248 158.01)"
+        ]
+      },
+      "sage": {
+        "role": "neutral",
+        "displayName": "Pale Sage",
+        "canonical": "#eaf1ed",
+        "tonalRamp": [
+          "oklch(15% 0.0091 161.35)",
+          "oklch(26.43% 0.0091 161.35)",
+          "oklch(37.86% 0.0091 161.35)",
+          "oklch(49.29% 0.0091 161.35)",
+          "oklch(60.71% 0.0091 161.35)",
+          "oklch(72.14% 0.0091 161.35)",
+          "oklch(83.57% 0.0091 161.35)",
+          "oklch(95% 0.0091 161.35)"
+        ]
+      },
+      "soft": {
+        "role": "neutral",
+        "displayName": "Soft Paper",
+        "canonical": "#f4f7f5",
+        "tonalRamp": [
+          "oklch(15% 0.0041 157.18)",
+          "oklch(26.43% 0.0041 157.18)",
+          "oklch(37.86% 0.0041 157.18)",
+          "oklch(49.29% 0.0041 157.18)",
+          "oklch(60.71% 0.0041 157.18)",
+          "oklch(72.14% 0.0041 157.18)",
+          "oklch(83.57% 0.0041 157.18)",
+          "oklch(95% 0.0041 157.18)"
+        ]
+      },
+      "yellow": {
+        "role": "secondary",
+        "displayName": "Warm Yellow",
+        "canonical": "#ffdf57",
+        "tonalRamp": [
+          "oklch(15% 0.1547 95.83)",
+          "oklch(26.43% 0.1547 95.83)",
+          "oklch(37.86% 0.1547 95.83)",
+          "oklch(49.29% 0.1547 95.83)",
+          "oklch(60.71% 0.1547 95.83)",
+          "oklch(72.14% 0.1547 95.83)",
+          "oklch(83.57% 0.1547 95.83)",
+          "oklch(95% 0.1547 95.83)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Sage Line",
+        "canonical": "#dce5de",
+        "tonalRamp": [
+          "oklch(15% 0.0134 152.59)",
+          "oklch(26.43% 0.0134 152.59)",
+          "oklch(37.86% 0.0134 152.59)",
+          "oklch(49.29% 0.0134 152.59)",
+          "oklch(60.71% 0.0134 152.59)",
+          "oklch(72.14% 0.0134 152.59)",
+          "oklch(83.57% 0.0134 152.59)",
+          "oklch(95% 0.0134 152.59)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(26.43% 0.0000 0.00)",
+          "oklch(37.86% 0.0000 0.00)",
+          "oklch(49.29% 0.0000 0.00)",
+          "oklch(60.71% 0.0000 0.00)",
+          "oklch(72.14% 0.0000 0.00)",
+          "oklch(83.57% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Base page headline; responsive and inner-page overrides remain in app.css."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Base subsection and card titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Readable base paragraphs."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Introductory copy, maximum 65ch."
+      },
+      "label": {
+        "displayName": "Action label",
+        "purpose": "Compact buttons and secondary actions."
+      },
+      "wordmark": {
+        "displayName": "Serif wordmark",
+        "purpose": "VeriSale identity only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "paper-shadow",
+        "value": "0 16px 45px -25px #1b3b3038",
+        "purpose": "Report preview papers and layered history example."
+      },
+      {
+        "name": "search-shadow",
+        "value": "0 8px 24px -17px #173d2e60",
+        "purpose": "Working search container."
+      }
+    ],
+    "motion": [
+      {
+        "name": "interaction",
+        "value": "background-color 180ms ease, color 180ms ease, box-shadow 180ms ease",
+        "purpose": "Shared link, button and summary transitions."
+      },
+      {
+        "name": "report-settle",
+        "value": "850ms cubic-bezier(.16,1,.3,1) both",
+        "purpose": "Main preview enters visibly from translateY(12px) rotate(4deg) to translateY(0) rotate(7deg)."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none !important; transition: none !important; scroll-behavior: auto",
+        "purpose": "Disable motion and smooth scrolling when requested."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1100px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      },
+      {
+        "name": "mobile",
+        "value": "700px"
+      },
+      {
+        "name": "small-mobile",
+        "value": "400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Compact forest action for searching and continuing.",
+      "html": "<button class=\"ds-button\" type=\"button\">Pārbaudīt <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-button{display:inline-flex;min-height:43px;align-items:center;justify-content:space-between;gap:23px;padding:11px 19px;border:0;border-radius:5px;background:var(--green,#173d2e);color:white;font:600 12px/1.5 'DM Sans',sans-serif;text-decoration:none;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,box-shadow 180ms ease}.ds-button:hover{background:var(--green-hover,#285b44)}.ds-button:focus-visible{outline:2px solid var(--green,#173d2e);outline-offset:4px}.ds-button:disabled{opacity:.65;cursor:wait}@media(prefers-reduced-motion:reduce){.ds-button{transition:none}}"
+    },
+    {
+      "name": "Yellow Button",
+      "kind": "button",
+      "refersTo": "button-yellow",
+      "description": "Restrained action accent on selected promotional and forest surfaces.",
+      "html": "<button class=\"ds-button ds-yellow\" type=\"button\">Apskatīt pārskatu <span aria-hidden=\"true\">→</span></button>",
+      "css": ".ds-button{display:inline-flex;min-height:43px;align-items:center;justify-content:space-between;gap:23px;padding:11px 19px;border:0;border-radius:5px;background:var(--green,#173d2e);color:white;font:600 12px/1.5 'DM Sans',sans-serif;text-decoration:none;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,box-shadow 180ms ease}.ds-button:hover{background:var(--green-hover,#285b44)}.ds-button:focus-visible{outline:2px solid var(--green,#173d2e);outline-offset:4px}.ds-button:disabled{opacity:.65;cursor:wait}@media(prefers-reduced-motion:reduce){.ds-button{transition:none}}.ds-yellow{background:var(--yellow,#ffdf57);color:var(--ink,#21392e)}.ds-yellow:hover{background:#f2cd3c}"
+    },
+    {
+      "name": "Text Link",
+      "kind": "button",
+      "refersTo": "text-link",
+      "description": "Quiet secondary action with an unobtrusive directional arrow.",
+      "html": "<a class=\"ds-link\" href=\"#report\">Apskatīt īpašumu <span aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-link{display:inline-flex;align-items:center;gap:18px;padding:9px 0;color:var(--green,#173d2e);font:600 12px/1.5 'DM Sans',sans-serif;text-decoration:none;transition:color 180ms ease}.ds-link:hover{color:var(--green-hover,#285b44);text-decoration:underline}.ds-link:focus-visible{outline:2px solid var(--green,#173d2e);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-link{transition:none}}"
+    },
+    {
+      "name": "Address Search",
+      "kind": "input",
+      "description": "Single labelled address or cadastre field with a working-form visual grammar.",
+      "html": "<form class=\"ds-search\" role=\"search\"><label class=\"ds-label\" for=\"ds-address\">Īpašuma adrese vai kadastra numurs</label><input id=\"ds-address\" name=\"q\" type=\"search\" placeholder=\"Ievadiet adresi vai kadastra numuru\" required minlength=\"2\" maxlength=\"200\"><button class=\"ds-button\" type=\"submit\">Pārbaudīt <span aria-hidden=\"true\">→</span></button></form>",
+      "css": ".ds-button{display:inline-flex;min-height:43px;align-items:center;justify-content:space-between;gap:23px;padding:11px 19px;border:0;border-radius:5px;background:var(--green,#173d2e);color:white;font:600 12px/1.5 'DM Sans',sans-serif;text-decoration:none;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,box-shadow 180ms ease}.ds-button:hover{background:var(--green-hover,#285b44)}.ds-button:focus-visible{outline:2px solid var(--green,#173d2e);outline-offset:4px}.ds-button:disabled{opacity:.65;cursor:wait}@media(prefers-reduced-motion:reduce){.ds-button{transition:none}}.ds-search{display:flex;align-items:center;gap:6px;padding:6px;background:white;border:1px solid #9bb3a4;border-radius:7px;box-shadow:0 8px 24px -17px #173d2e60}.ds-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}.ds-search:focus-within{outline:2px solid var(--green,#173d2e);outline-offset:3px}.ds-search input{width:100%;min-width:0;flex:1;padding:11px 8px;border:0;background:transparent;color:var(--ink,#21392e);font:400 12px 'DM Sans',sans-serif;caret-color:var(--green,#173d2e)}.ds-search input::placeholder{color:#69796f;opacity:1}.ds-search input:focus-visible{outline:none}.ds-search .ds-button{min-height:39px;flex-shrink:0;padding:10px 16px;gap:20px}@media(max-width:700px){.ds-search input{font-size:16px}}@media(max-width:400px){.ds-search{flex-wrap:wrap;padding:7px}.ds-search input{flex-basis:100%;padding:10px 7px}.ds-search .ds-button{width:100%;justify-content:center}}"
+    },
+    {
+      "name": "Forest Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Compact light text links on a forest surface with a yellow current-page underline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Galvenā navigācija\"><a href=\"#home\" aria-current=\"page\">Sākums</a><a href=\"#pricing\">Cenas</a><a href=\"#sample\">Atskaites piemērs</a></nav>",
+      "css": ".ds-nav{display:flex;gap:23px;align-items:center;min-height:62px;padding:0 20px;background:var(--green,#173d2e);font-family:'DM Sans',sans-serif}.ds-nav a{padding:12px 0;color:#d7e5dc;text-decoration:none;font-size:12px;transition:color 180ms ease}.ds-nav a:hover,.ds-nav a[aria-current]{color:white;text-decoration:underline;text-decoration-color:var(--yellow,#ffdf57);text-underline-offset:8px}.ds-nav a:focus-visible{outline:2px solid var(--yellow,#ffdf57);outline-offset:4px}@media(max-width:700px){.ds-nav{display:grid;gap:3px;padding:12px 20px 22px}.ds-nav a{font-size:16px}}@media(prefers-reduced-motion:reduce){.ds-nav a{transition:none}}"
+    },
+    {
+      "name": "Sage Feature Card",
+      "kind": "card",
+      "refersTo": "feature-card",
+      "description": "Flat, softly curved title-and-copy block used in the shared feature grid.",
+      "html": "<article class=\"ds-feature\"><h3>Darījumu vēsture</h3><p>Iepriekšējie darījumi un to datumi pārskatāmā hronoloģijā.</p></article>",
+      "css": ".ds-feature{padding:22px 20px;border-radius:7px;background:var(--sage,#eaf1ed);color:var(--ink,#21392e);font-family:'DM Sans',sans-serif}.ds-feature h3{margin:0;font-size:14px;line-height:1.35;font-weight:700;letter-spacing:-.02em}.ds-feature p{margin:8px 0 0;color:var(--muted,#5e6e64);font-size:12px;line-height:1.65}@media(max-width:700px){.ds-feature{padding:20px 17px}.ds-feature p{font-size:11px}}"
+    },
+    {
+      "name": "Report Paper",
+      "kind": "card",
+      "refersTo": "report-paper",
+      "description": "White report paper with forest summary, explicit demo context and aligned numeric detail.",
+      "html": "<article class=\"ds-paper\"><h3>Īpašuma pārskats</h3><p class=\"ds-demo\">Ilustratīva demonstrācijas atskaite</p><div class=\"ds-summary\"><span>Pēdējā darījuma summa</span><strong>125 000 €</strong></div><dl class=\"ds-data\"><div><dt>Platība</dt><dd>65 m²</dd></div><div><dt>Darījumi</dt><dd>3</dd></div></dl></article>",
+      "css": ".ds-paper{padding:28px;background:white;border-radius:var(--radius,10px);color:var(--ink,#21392e);font-family:'DM Sans',sans-serif}.ds-paper h3{margin:0;font-size:19px;letter-spacing:-.03em;line-height:1.35}.ds-demo{margin:12px 0 20px;color:var(--muted,#5e6e64);font-size:12px;line-height:1.75}.ds-summary{padding:23px;background:var(--green,#173d2e);color:white;border-radius:6px}.ds-summary span{display:block;font-size:11px;color:#d3e2d9}.ds-summary strong{display:block;font-size:32px;letter-spacing:-.03em;margin-top:6px}.ds-data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:24px;margin:22px 0 0;background:var(--soft,#f4f7f5);border-radius:6px}.ds-data dt{font-size:10px;color:var(--muted,#5e6e64);margin-bottom:7px}.ds-data dd{margin:0;font-size:13px;line-height:1.6}@media(max-width:700px){.ds-paper{padding:24px}.ds-summary{padding:18px}.ds-summary strong{font-size:25px}.ds-data{gap:22px 15px;padding:20px}}"
+    },
+    {
+      "name": "FAQ Disclosure",
+      "kind": "custom",
+      "description": "Native details disclosure with a quiet divider and plus/minus affordance.",
+      "html": "<details class=\"ds-faq\"><summary>Kā darbojas vienreizējā maksa?</summary><p>Viena īsta īpašuma atskaite maksā 9,99 €. Pēc apstiprināta maksājuma piekļuve šajā pārlūkā ir pieejama 24 stundas.</p></details>",
+      "css": ".ds-faq{padding:20px 0;border-bottom:1px solid #d9e3dc;color:var(--ink,#21392e);font-family:'DM Sans',sans-serif}.ds-faq summary{display:flex;align-items:start;justify-content:space-between;gap:24px;font-size:14px;line-height:1.65;cursor:pointer;list-style:none;font-weight:500;transition:color 180ms ease}.ds-faq summary::-webkit-details-marker{display:none}.ds-faq summary::after{content:'+';flex:0 0 17px;text-align:center;font-size:20px;line-height:1.2;font-weight:400;color:#657d6c}.ds-faq[open] summary::after{content:'−'}.ds-faq summary:focus-visible{outline:2px solid var(--green,#173d2e);outline-offset:4px}.ds-faq p{max-width:75ch;margin:15px 0 0;padding-right:24px;color:var(--muted,#5e6e64);font-size:13px;line-height:1.75}@media(max-width:700px){.ds-faq{padding:18px 0}.ds-faq summary{font-size:13px;gap:20px}.ds-faq p{font-size:12px}}@media(prefers-reduced-motion:reduce){.ds-faq summary{transition:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Clear Property Report",
+    "overview": "VeriSale uses a calm property-report language derived from the user's pinned Estimo reference: compact forest navigation, pale sage and white sections, tightly set dark headings, restrained yellow actions, illustrative photography, and readable report papers.\n\nThe interface moves between persuasion and practical data work without changing its component family. Paper overlap gives report previews a tangible presence; tables, fields, pricing and result rows remain orderly and understated. DM Sans carries the interface, while Instrument Serif is reserved for the wordmark.",
+    "keyCharacteristics": [
+      "Light sage and white surfaces with forest structure.",
+      "Medium-scale sans-serif headings and a distinctive serif wordmark.",
+      "Compact controls, softly curved containers and restrained paper depth.",
+      "Real report patterns, explicit demo labels and credited illustrative photography."
+    ],
+    "rules": [
+      {
+        "name": "The Reserved Yellow Rule",
+        "body": "Use yellow for selected actions, the wordmark dot and the homepage text underline. The featured pricing surface remains forest green.",
+        "section": "colors"
+      },
+      {
+        "name": "The Shared Family Rule",
+        "body": "Extend the existing section, hero, search, report and pricing patterns before adding a new visual language.",
+        "section": "layout"
+      },
+      {
+        "name": "The Paper Depth Rule",
+        "body": "Reserve diffuse elevation and overlap for report papers; ordinary sections and data containers rely on tone and borders.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do reuse the shared Blade components and partials across marketing and operating pages.",
+      "Do keep demo labels and illustrative-photo credits visible beside their evidence.",
+      "Do preserve explicit focus, active navigation, native form validation and reduced-motion behavior.",
+      "Do reuse the shared pricing partial, including its contact-only professional offers.",
+      "Do keep a single FAQ and final search in the common layout."
+    ],
+    "donts": [
+      "Don't introduce AI claims, fabricated testimonials, partner logos, usage totals or unsupported valuation features.",
+      "Don't replace the supplied light report-led homepage direction with a full-bleed photo hero.",
+      "Don't add small decorative tags, placeholder icons or a yellow featured-pricing background.",
+      "Don't turn illustrative records or photography into claims about a real listed property."
+    ]
+  }
+}

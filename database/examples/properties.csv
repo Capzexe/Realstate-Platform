@@ -1,0 +1,3 @@
+address,city,cadastre_number,type,area_m2,rooms,floor,total_floors,construction_year,wall_material,land_area_m2,transaction_date,price_eur
+Imported example 1,Rīga,99999999901,Dzīvoklis,60,3,2,5,1980,Ķieģeļu,,2020-04-15,65000
+Imported example 1,Rīga,99999999901,Dzīvoklis,60,3,2,5,1980,Ķieģeļu,,2024-06-20,89000

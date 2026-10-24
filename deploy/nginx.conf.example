@@ -1,0 +1,71 @@
+# Replace verisale.example, certificate paths, release path and FPM socket.
+# Install this in the Nginx http {} context. Use PHP-FPM's matching INI profile.
+server {
+    listen 80 default_server;
+    server_name _;
+    return 444;
+}
+
+server {
+    listen 80;
+    server_name verisale.example;
+    return 308 https://verisale.example$request_uri;
+}
+
+# Nginx >= 1.19.4: refuse TLS for unknown SNI names.
+server {
+    listen 443 ssl default_server;
+    server_name _;
+    ssl_reject_handshake on;
+}
+
+server {
+    listen 443 ssl;
+    server_name verisale.example;
+    root /srv/verisale/current/public;
+    index index.php;
+    server_tokens off;
+    autoindex off;
+    client_max_body_size 256k;
+
+    ssl_certificate /etc/letsencrypt/live/verisale.example/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/verisale.example/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    # 'always' covers static files and Nginx-generated errors as well as Laravel.
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header Content-Security-Policy "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self' https://checkout.stripe.com; frame-src 'none'; upgrade-insecure-requests" always;
+    add_header X-Frame-Options DENY always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy strict-origin-when-cross-origin always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Never expose dotfiles, backup artifacts or a future public storage symlink.
+    location ~ /\. { deny all; }
+    location /storage/ { return 404; }
+    location ~* \.(?:sqlite|sql|bak|ini|log|env|zip)$ { deny all; }
+
+    # Only Laravel's front controller can execute; an uploaded .php cannot run.
+    location = /index.php {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root/index.php;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param HTTPS on;
+        fastcgi_param HTTP_PROXY "";
+        fastcgi_pass unix:/run/php/php-fpm-verisale.sock;
+
+        # Edge headers above replace PHP headers instead of creating duplicate CSPs.
+        fastcgi_hide_header X-Powered-By;
+        fastcgi_hide_header Strict-Transport-Security;
+        fastcgi_hide_header Content-Security-Policy;
+        fastcgi_hide_header X-Frame-Options;
+        fastcgi_hide_header X-Content-Type-Options;
+        fastcgi_hide_header Referrer-Policy;
+        fastcgi_hide_header Permissions-Policy;
+    }
+    location ~* \.php(?:/|$) { return 404; }
+}

@@ -1,0 +1,70 @@
+# Apache 2.4 alternative to nginx.conf.example, using mod_ssl/headers/rewrite/proxy_fcgi.
+# Set ServerTokens Prod and ServerSignature Off in the global server config.
+# Make this the first/default vhost, or supply an equivalent rejecting default vhost.
+<VirtualHost *:80>
+    ServerName verisale.example
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} !^verisale\.example(?::80)?$ [NC]
+    RewriteRule ^ - [R=400,L]
+    RewriteRule ^ https://verisale.example%{REQUEST_URI} [R=308,L,NE]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName verisale.example
+    DocumentRoot /srv/verisale/current/public
+    SSLEngine On
+    SSLCertificateFile /etc/letsencrypt/live/verisale.example/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/verisale.example/privkey.pem
+    SSLProtocol -all +TLSv1.2 +TLSv1.3
+    LimitRequestBody 262144
+
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} !^verisale\.example(?::443)?$ [NC]
+    RewriteRule ^ - [R=400,L]
+    RewriteRule ^/?storage(?:/|$) - [R=404,L]
+
+    <Directory /srv/verisale/current>
+        Require all denied
+        AllowOverride None
+    </Directory>
+    <Directory /srv/verisale/current/public>
+        Require all granted
+        Options -Indexes -MultiViews
+        AllowOverride None
+        DirectoryIndex index.php
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [L]
+    </Directory>
+
+    <FilesMatch "(^\.|\.(?:sqlite|sql|bak|ini|log|env|zip)$)">
+        Require all denied
+    </FilesMatch>
+    <FilesMatch "(?i)\.php$">
+        Require all denied
+    </FilesMatch>
+    <Files "index.php">
+        Require all granted
+        SetHandler "proxy:unix:/run/php/php-fpm-verisale.sock|fcgi://localhost/"
+    </Files>
+    <LocationMatch "(?i)^/(?!index\.php$).*\.php(?:/|$)">
+        Require all denied
+    </LocationMatch>
+
+    # Remove both header tables before setting one copy (PHP-FPM uses 'always').
+    Header onsuccess unset Strict-Transport-Security
+    Header onsuccess unset Content-Security-Policy
+    Header onsuccess unset X-Frame-Options
+    Header onsuccess unset X-Content-Type-Options
+    Header onsuccess unset Referrer-Policy
+    Header onsuccess unset Permissions-Policy
+    Header onsuccess unset X-Powered-By
+    Header always unset X-Powered-By
+    Header always set Strict-Transport-Security "max-age=31536000"
+    Header always set Content-Security-Policy "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self' https://checkout.stripe.com; frame-src 'none'; upgrade-insecure-requests"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</VirtualHost>
