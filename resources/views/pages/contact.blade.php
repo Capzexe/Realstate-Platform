@@ -25,20 +25,31 @@
                 ]" />
                 <a class="text-link" href="{{ route('pricing') }}">Apskatīt cenas <span aria-hidden="true">→</span></a>
             </aside>
-            <form class="paper contact-form" action="{{ route('contact.store') }}" method="post">
+            <form class="paper contact-form" action="{{ route('contact.store') }}" method="post" data-validate-form>
                 @csrf
                 <h3>Jūsu ziņojums</h3>
                 <p>Aizpildiet laukus, lai sazinātos ar mūsu komandu.</p>
                 <div class="form-pair">
                     <div class="form-field"><label for="name">Vārds, uzvārds</label><input id="name" name="name"
-                            autocomplete="name" value="{{ $form['name'] }}" required maxlength="100"></div>
+                            autocomplete="name" value="{{ $form['name'] }}" required maxlength="100"
+                            @error('name') aria-invalid="true" aria-describedby="name-error" @enderror>
+                        <x-field-error name="name" id="name-error" />
+                    </div>
                     <div class="form-field"><label for="email">E-pasts</label><input id="email" name="email"
-                            type="email" autocomplete="email" value="{{ $form['email'] }}" required maxlength="254"></div>
+                            type="email" autocomplete="email" value="{{ $form['email'] }}" required maxlength="254"
+                            @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
+                        <x-field-error name="email" id="email-error" />
+                    </div>
                 </div>
                 <div class="form-field"><label for="subject">Temats</label><input id="subject" name="subject"
-                        value="{{ $form['subject'] }}" required maxlength="150"></div>
+                        value="{{ $form['subject'] }}" required maxlength="150"
+                        @error('subject') aria-invalid="true" aria-describedby="subject-error" @enderror>
+                    <x-field-error name="subject" id="subject-error" />
+                </div>
                 <div class="form-field"><label for="message">Ziņojums</label>
-                    <textarea id="message" name="message" rows="5" required minlength="10" maxlength="5000">{{ $form['message'] }}</textarea>
+                    <textarea id="message" name="message" rows="5" required minlength="10" maxlength="5000"
+                        @error('message') aria-invalid="true" aria-describedby="message-error" @enderror>{{ $form['message'] }}</textarea>
+                    <x-field-error name="message" id="message-error" />
                 </div>
                 <button class="button" type="submit" data-loading-text="Sūtām…">Nosūtīt ziņojumu <span
                         aria-hidden="true">→</span></button>

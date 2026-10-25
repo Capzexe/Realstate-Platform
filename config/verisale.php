@@ -8,7 +8,7 @@ return [
         ['name' => 'Aģentūrām', 'price' => '149', 'period' => 'mēnesī, sākot no · pēc saziņas', 'description' => 'Pārrunāsim nekustamo īpašumu komandas vajadzības.', 'features' => ['Komandas datu vajadzību izvērtēšana', 'Individuāls sadarbības piedāvājums', 'Vienošanās par piekļuvi un apjomu', 'Sazinieties pirms pasūtīšanas']],
     ],
     'faqs' => [
-        ['Kā darbojas vienreizējā maksa?', 'Viena īsta īpašuma atskaite maksā 9,99 €. Pēc apstiprināta maksājuma piekļuve šajā pārlūkā ir pieejama 24 stundas. Demonstrācijas atskaites ir bez maksas.'],
+        ['Kā darbojas vienreizējā maksa?', 'Viena īpašuma atskaite maksā 9,99 €. Pēc veiksmīga maksājuma piekļuve šajā pārlūkā ir pieejama 24 stundas. Vietējā testa režīmā maksājums tiek simulēts un īsta nauda netiek iekasēta.'],
         ['Kādus datus iegūstu?', 'Pieejamos īpašuma datus, darījumu datumus, reģistrētās summas eiro un cenu vēstures grafiku. Atskaiti var saglabāt kā PDF ar pārlūka drukāšanas funkciju.'],
         ['Vai piemēros redzami īsti darījumi?', 'Nē. Demonstrācijas īpašumi un to darījumi ir ilustratīvi. Īstas atskaites saturs ir atkarīgs no datubāzē importētajiem ierakstiem.'],
         ['Vai varu iegādāties vairākas atskaites?', 'Jā. Katra īpašuma atskaite tiek iegādāta atsevišķi. Saglabājiet atskaiti kā PDF un turpiniet izmantot to pašu pārlūku, lai saglabātu piekļuvi.'],

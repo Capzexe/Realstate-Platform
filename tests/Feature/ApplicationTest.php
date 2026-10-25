@@ -23,7 +23,7 @@ class ApplicationTest extends TestCase
 
     public function test_public_pages_render_with_one_shared_faq(): void
     {
-        foreach (['/', '/cenas', '/atskaites-piemers', '/par-mums', '/kontakti'] as $url) {
+        foreach (['/', '/cenas', '/atskaites-piemers', '/par-mums', '/kontakti', '/demo'] as $url) {
             $response = $this->get($url)->assertOk()->assertSee('Biežāk uzdotie jautājumi');
             $this->assertSame(1, substr_count($response->getContent(), 'id="faq-title"'));
         }
@@ -37,6 +37,17 @@ class ApplicationTest extends TestCase
                 $this->get('/atskaites-piemers?'.http_build_query(compact('type', 'section')))->assertOk();
             }
         }
+    }
+
+    public function test_public_demo_video_supports_byte_ranges_for_seeking(): void
+    {
+        $size = filesize(public_path('media/demo/purchase-walkthrough.webm'));
+        $this->withHeader('Range', 'bytes=0-15')->get('/demo/video')
+            ->assertStatus(206)
+            ->assertHeader('Content-Type', 'video/webm')
+            ->assertHeader('Accept-Ranges', 'bytes')
+            ->assertHeader('Content-Range', 'bytes 0-15/'.$size)
+            ->assertHeader('Content-Length', '16');
     }
 
     public function test_search_understands_latvian_letters_and_cadastres(): void
@@ -55,10 +66,10 @@ class ApplicationTest extends TestCase
         $this->get('/ipasumi')->assertSessionHasErrors('q');
     }
 
-    public function test_demo_reports_are_free_and_seeding_is_idempotent(): void
+    public function test_demo_reports_require_payment_and_seeding_is_idempotent(): void
     {
         $property = Property::first();
-        $this->get(route('properties.report', $property))->assertOk()->assertSee('87 500');
+        $this->get(route('properties.report', $property))->assertRedirect(route('properties.show', $property));
         $this->seed();
         $this->assertDatabaseCount('properties', 12);
         $this->assertDatabaseCount('property_transactions', 36);
@@ -68,7 +79,7 @@ class ApplicationTest extends TestCase
     {
         $property = $this->privateProperty();
         $this->get(route('properties.show', $property))->assertOk()->assertDontSee('123 456');
-        $this->get(route('properties.report', $property).'?paid=true')->assertForbidden();
+        $this->get(route('properties.report', $property).'?paid=true')->assertRedirect(route('properties.show', $property));
         Http::assertNothingSent();
     }
 
@@ -77,10 +88,10 @@ class ApplicationTest extends TestCase
         $property = $this->privateProperty();
         $purchase = $property->purchases()->create();
         $purchase->markPaid();
-        $this->get(route('properties.report', $property))->assertForbidden();
+        $this->get(route('properties.report', $property))->assertRedirect(route('properties.show', $property));
         $this->withSession(['purchase_ids' => [$purchase->id]])->get(route('properties.report', $property))->assertOk()->assertSee('123 456');
         $this->travel(25)->hours();
-        $this->get(route('properties.report', $property))->assertForbidden();
+        $this->get(route('properties.report', $property))->assertRedirect(route('properties.show', $property));
     }
 
     public function test_contact_form_validates_before_sending_and_uses_configured_recipient(): void

@@ -16,3 +16,6 @@
 
 /.impeccable/review/
 /.impeccable/qa/
+/test-results/
+/playwright-report/
+/artifacts/

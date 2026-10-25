@@ -9,6 +9,12 @@ class Purchase extends Model
 {
     protected $fillable = ['checkout_session_id'];
 
+    public static function demoPaymentsEnabled(): bool
+    {
+        // Never turn a local fake payment into production report access.
+        return app()->environment('local', 'testing') && config('services.payments.demo') === true;
+    }
+
     protected function casts(): array
     {
         return ['paid_at' => 'datetime', 'expires_at' => 'datetime'];

@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'payments' => [
+        // Demo payments require BOTH an explicit switch and a local/test environment.
+        'demo' => (bool) env('DEMO_PAYMENTS', false),
+    ],
     // Read secrets here so Laravel's configuration cache works in production.
     'stripe' => [
         'secret' => env('STRIPE_SECRET_KEY'),

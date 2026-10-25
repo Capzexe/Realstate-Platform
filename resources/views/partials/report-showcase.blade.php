@@ -68,8 +68,7 @@
             @endif
             <p class="small-note">Demonstrācijas dati. Pieejamā informācija ir atkarīga no datubāzē esošajiem
                 ierakstiem.</p>
-            <a class="text-link" href="{{ route('properties.report', $property) }}">Atvērt pilnu demonstrācijas
-                atskaiti <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="{{ route('home') }}#property-search">Atrast īpašumu un iegādāties atskaiti <span aria-hidden="true">→</span></a>
         </article>
     </div>
 </x-section>

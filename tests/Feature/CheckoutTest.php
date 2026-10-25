@@ -97,6 +97,15 @@ class CheckoutTest extends TestCase
         $this->assertSame($expires, $purchase->fresh()->expires_at->toIso8601String());
     }
 
+    public function test_signed_stripe_webhook_cannot_complete_a_simulated_purchase(): void
+    {
+        $purchase = $this->purchase();
+        $purchase->payment_provider = 'demo';
+        $purchase->save();
+        $this->sendWebhook($this->paidSession($purchase))->assertOk();
+        $this->assertNull($purchase->fresh()->paid_at);
+    }
+
     public function test_signed_webhook_rejects_wrong_amount_currency_or_property(): void
     {
         $purchase = $this->purchase();

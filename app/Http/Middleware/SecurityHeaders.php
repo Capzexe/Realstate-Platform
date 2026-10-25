@@ -19,7 +19,7 @@ class SecurityHeaders
     public static function apply(Request $request, Response $response): Response
     {
         $policy = "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; "
-            ."script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; "
+            ."script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; font-src 'self'; connect-src 'self'; "
             ."form-action 'self' https://checkout.stripe.com; frame-src 'none'";
 
         if (config('security.require_https')) {

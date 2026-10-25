@@ -9,3 +9,5 @@
 
 
 - `property-interior.jpg`: living room with a green couch, by Spacejoy. Source: https://unsplash.com/photos/0JGRXomKXSw . Local hero background downloaded from https://images.unsplash.com/photo-1632119580908-ae947d4c7691?auto=format&fit=crop&w=2000&q=85 . Free under the Unsplash License; illustrative interior, not a listed property.
+
+- `media/demo/purchase-walkthrough.webm`, `media/demo/poster.png` and `media/demo/purchase-walkthrough.lv.vtt`: native Chromium capture of this application's isolated, fictional purchase flow, recorded on 25 October 2026 with `npm run demo:record`. The poster is a frame from the actual report page; captions describe the recorded actions. No real customer information, card data, funds or external payment service was used. The media directory deliberately differs from the `/demo` application route.

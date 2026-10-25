@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-24T10:15:25Z",
+  "generatedAt": "2026-10-24T17:32:00Z",
   "title": "Design System: VeriSale",
   "extensions": {
     "colorMeta": {
@@ -275,6 +275,13 @@
       "css": ".ds-paper{padding:28px;background:white;border-radius:var(--radius,10px);color:var(--ink,#21392e);font-family:'DM Sans',sans-serif}.ds-paper h3{margin:0;font-size:19px;letter-spacing:-.03em;line-height:1.35}.ds-demo{margin:12px 0 20px;color:var(--muted,#5e6e64);font-size:12px;line-height:1.75}.ds-summary{padding:23px;background:var(--green,#173d2e);color:white;border-radius:6px}.ds-summary span{display:block;font-size:11px;color:#d3e2d9}.ds-summary strong{display:block;font-size:32px;letter-spacing:-.03em;margin-top:6px}.ds-data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding:24px;margin:22px 0 0;background:var(--soft,#f4f7f5);border-radius:6px}.ds-data dt{font-size:10px;color:var(--muted,#5e6e64);margin-bottom:7px}.ds-data dd{margin:0;font-size:13px;line-height:1.6}@media(max-width:700px){.ds-paper{padding:24px}.ds-summary{padding:18px}.ds-summary strong{font-size:25px}.ds-data{gap:22px 15px;padding:20px}}"
     },
     {
+      "name": "Inner Page Hero",
+      "kind": "custom",
+      "description": "Shared inner-page introduction with contextual full-width photography, a warm light wash, dark copy and a linked illustrative-photo credit. The homepage keeps its report-led search composition.",
+      "html": "<section class=\"ds-inner-hero\"><figure class=\"ds-hero-photo\"><img class=\"ds-hero-background\" src=\"/property-interior.jpg\" alt=\"\" aria-hidden=\"true\"><figcaption><a href=\"https://unsplash.com/photos/0JGRXomKXSw\">Ilustratīvs foto: Spacejoy / Unsplash</a></figcaption></figure><div class=\"ds-hero-shell\"><div class=\"ds-hero-copy\"><h1>Skaidra vēsture. Skaidras cenas.</h1><p>No vienas atskaites līdz komandas ikdienas darbam. Izvēlieties apjomu, kas atbilst jūsu vajadzībām.</p></div></div></section>",
+      "css": ".ds-inner-hero{position:relative;isolation:isolate;background:#f5f3ed;color:var(--ink,#21392e);font-family:'DM Sans',sans-serif}.ds-hero-shell{position:relative;z-index:1;display:flex;align-items:center;width:min(1080px,calc(100% - 96px));margin-inline:auto;min-height:350px;padding-block:58px 70px;box-sizing:border-box}.ds-hero-copy{width:min(100%,610px)}.ds-hero-copy h1{margin:0;font-size:36px;font-weight:700;line-height:1.16;letter-spacing:-.03em;text-wrap:balance}.ds-hero-copy p{max-width:560px;margin:15px 0 0;color:#405448;font-size:14px;line-height:1.75}.ds-hero-photo{position:absolute;inset:0;margin:0}.ds-hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#f7f5f0fc 0%,#f7f5f0f5 38%,#f7f5f0c7 55%,#f7f5f029 80%,#f7f5f00a 100%)}.ds-hero-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 64%}.ds-hero-photo figcaption{position:absolute;z-index:2;right:24px;bottom:14px;margin:0;padding:6px 10px;background:#173d2ee8;color:#eff6f0;border-radius:4px;font-size:9px;line-height:1.6}.ds-hero-photo a{color:inherit;text-decoration:none;transition:color 180ms ease}.ds-hero-photo a:hover{text-decoration:underline}.ds-hero-photo a:focus-visible{outline:2px solid var(--yellow,#ffdf57);outline-offset:4px}@media(max-width:1100px){.ds-hero-shell{width:calc(100% - 72px)}}@media(max-width:700px){.ds-hero-shell{width:calc(100% - 40px);min-height:330px;padding-block:40px 68px}.ds-hero-copy h1{font-size:33px}.ds-hero-copy p{font-size:13px}.ds-hero-photo::after{background:linear-gradient(90deg,#f7f5f0f5,#f7f5f0e6 60%,#f7f5f0c9)}.ds-hero-photo figcaption{right:16px;bottom:13px;font-size:8px}}@media(max-width:400px){.ds-hero-shell{width:calc(100% - 32px)}.ds-hero-copy h1{font-size:31px}}@media(prefers-reduced-motion:reduce){.ds-hero-photo a{transition:none}}"
+    },
+    {
       "name": "FAQ Disclosure",
       "kind": "custom",
       "description": "Native details disclosure with a quiet divider and plus/minus affordance.",
@@ -306,6 +313,11 @@
         "name": "The Paper Depth Rule",
         "body": "Reserve diffuse elevation and overlap for report papers; ordinary sections and data containers rely on tone and borders.",
         "section": "elevation"
+      },
+      {
+        "name": "The Inner Hero Rule",
+        "body": "Use full-width contextual photography behind a warm light wash and dark text for shared inner-page introductions. Strengthen the wash on mobile, allow content to set the height, and keep the linked illustrative-photo credit visible and clickable at the bottom. Preserve the homepage's report-led search composition.",
+        "section": "components"
       }
     ],
     "dos": [

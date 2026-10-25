@@ -60,6 +60,7 @@
             <div>
                 <h2>Platforma</h2><a href="{{ route('home') }}#property-search">Meklēt īpašumu</a><a
                     href="{{ route('pricing') }}">Cenu plāni</a><a href="{{ route('sample') }}">Atskaites piemērs</a>
+                <a href="{{ route('demo') }}">Pirkuma plūsmas video</a>
             </div>
             <div>
                 <h2>Par VeriSale</h2><a href="{{ route('about') }}">Mūsu pieeja</a><a

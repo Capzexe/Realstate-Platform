@@ -1,2 +1,2 @@
-@props(['value'])
-{{ $value !== null ? number_format((float) $value, 0, ',', ' ') . ' €' : '—' }}
+@props(['value', 'decimals' => 0])
+{{ $value !== null ? number_format((float) $value, $decimals, ',', ' ') . ' €' : '—' }}

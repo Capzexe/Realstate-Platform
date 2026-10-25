@@ -24,7 +24,7 @@ class DemoDatabaseTest extends TestCase
         }
         foreach (Property::all() as $property) {
             $this->assertSame(3, $property->transactions()->count());
-            $this->get(route('properties.report', $property))->assertOk();
+            $this->get(route('properties.report', $property))->assertRedirect(route('properties.show', $property));
         }
     }
 
@@ -38,6 +38,6 @@ class DemoDatabaseTest extends TestCase
         $this->assertFalse($property->fresh()->is_demo);
         $this->assertSame('Existing imported property', $property->fresh()->address);
         $this->assertSame(1, $property->transactions()->count());
-        $this->get(route('properties.report', $property))->assertForbidden();
+        $this->get(route('properties.report', $property))->assertRedirect(route('properties.show', $property));
     }
 }

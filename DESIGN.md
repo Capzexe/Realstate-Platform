@@ -153,7 +153,7 @@ Headings are compact, dark and tightly tracked, with balanced wrapping. The seri
 
 ### Hierarchy
 
-- **Display:** the frontmatter display role supplies the base h1. Inner-page heroes use (36px), becoming (33px) below the mobile breakpoint; the printable live report uses (30px), then (27px).
+- **Display:** the frontmatter display role supplies the base h1. Inner-page heroes use (36px), becoming (33px) below the mobile breakpoint and (31px) at the small-mobile breakpoint; the printable live report uses (30px), then (27px).
 - **Headline:** the headline role supplies section h2; mobile section headings use (26px).
 - **Title:** base h3 follows the title role; feature titles use (14px), benefit titles (17px), and report panel titles (19px).
 - **Body:** base paragraphs follow the body role. Leads use the lead role and a maximum line length (65ch); section descriptions are (13px). Dense report and pricing copy is generally (10–12px).
@@ -164,13 +164,13 @@ Headings are compact, dark and tightly tracked, with balanced wrapping. The seri
 
 A centered shell is bounded at (1080px), with desktop width `min(1080px, calc(100% - 96px))`. Standard sections use the frontmatter section spacing; mobile uses section-mobile spacing. Section headings center within (690px), descriptions within (580px), and a left-aligned variant supports operating pages.
 
-The homepage starts with a light split hero (1.08fr / 1fr), working search and included-data list opposite overlapping report previews. This is the homepage expression, while the shared inner hero uses text and a credited photograph (1.2fr / .85fr). Standard split stories use broad breathing room (70px gaps); feature grids use four columns or an explicit three-column variant. The report showcase places section navigation beside a flexible paper panel. Property detail uses a wider data panel beside a forest purchase panel. Search results use ruled horizontal rows.
+The homepage starts with a light split hero (1.08fr / 1fr), working search and included-data list opposite overlapping report previews. This is the homepage expression, while the shared inner hero places shell-aligned dark text over a full-width contextual photograph with a warm light wash. Its minimum height is (350px), with copy bounded at (610px) and space reserved below for the photo credit. Standard split stories use broad breathing room (70px gaps); feature grids use four columns or an explicit three-column variant. The report showcase places section navigation beside a flexible paper panel. Property detail uses a wider data panel beside a forest purchase panel. Search results use ruled horizontal rows.
 
 Responsive rules are source-defined at maximum widths:
 
 - **1100px:** shell gutters become (36px per side); large grid gaps and pricing padding tighten.
 - **900px:** header search shortcut disappears; four-column features become two columns; report overview stacks internally; the report sidebar narrows.
-- **700px:** shell gutters become (20px per side); the text menu opens beneath a (60px) header; hero, story, three-column feature, property and pricing layouts stack. The standard feature grid remains two columns. Report section navigation becomes a two-column grid above the panel; contact pairs stack, and inputs use (16px) text.
+- **700px:** shell gutters become (20px per side); the text menu opens beneath a (60px) header; homepage hero, story, three-column feature, property and pricing layouts stack. The inner hero keeps its background with a stronger warm wash and a minimum height (330px), growing automatically with its content. The standard feature grid remains two columns. Report section navigation becomes a two-column grid above the panel; contact pairs stack, and inputs use (16px) text.
 - **400px:** shell gutters become (16px per side); search wraps to a full-width input and button; report previews and dense data typography tighten.
 
 The CSS supports a minimum body width (320px). Tables have horizontal scrolling containers. The footer moves from three columns to two, with its identity block spanning both mobile columns.
@@ -216,7 +216,11 @@ Feature cards use sage fill, no shadow and compact title/copy spacing. Shared pa
 
 ### Shared Page Patterns
 
-`section` selects white, sage or soft tone; `section-heading` selects centered or left alignment. `feature-grid` controls the four/three-column variants. `benefit-list` supports ruled benefits or numbered steps. `photo-story` pairs licensed illustrative photography with copy and visible credits. `hero` supplies the common light inner-page introduction; `search-form` preserves one address-search grammar.
+`section` selects white, sage or soft tone; `section-heading` selects centered or left alignment. `feature-grid` controls the four/three-column variants. `benefit-list` supports ruled benefits or numbered steps. `photo-story` pairs licensed illustrative photography with copy and visible credits. `hero` supplies the common photographic inner-page introduction; `search-form` preserves one address-search grammar.
+
+**The Inner Hero Rule.** Use full-width contextual photography behind a warm light wash and dark text for shared inner-page introductions. Strengthen the wash on mobile, allow content to set the height, and keep the linked illustrative-photo credit visible and clickable at the bottom. Preserve the homepage's report-led search composition.
+
+The inner hero uses forest headings and darker green-grey prose (#405448). The wash is strongest behind the left-aligned copy and opens toward the photograph on desktop. Pricing and sample use the Spacejoy interior; contact uses Vitaly Gariev's home office; about, results and property previews use Kseniia Samoylenko's Riga facade. Local files and original author/source records remain in `public/ASSETS.md`. The photograph is decorative with empty alternative text; its visible credit remains a real link above the background and copy layers.
 
 The common layout owns exactly one FAQ and one closing forest search section. FAQ items use native details/summary with a simple plus/minus affordance. Final search reuses the same working form. Results, contact and report pages inherit these foundations rather than creating a new shell.
 

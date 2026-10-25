@@ -55,11 +55,13 @@ The project is verified on PHP 8.4.27. Commit `composer.lock` to keep dependency
    php artisan serve --host=127.0.0.1 --port=3000
    ```
 
-   Open [localhost:3000](http://localhost:3000). Keep the terminal running. On this Windows machine, PHP is available at `C:\xampp\php\php.exe` if `php` is not on your PATH.
+   Open [localhost:3000](http://localhost:3000). Keep the terminal running. On Windows, use `dev.ps1` to select the verified project PHP runtime.
 
 ## Usage
 
-Search for **Brīvības**, **Jelgava**, or **Cēsis**. Open a result and select the free demonstration report. Explore the sample report's property types and sections, or use **Saglabāt kā PDF** to open the browser's print dialog.
+Search for **Brīvības**, **Jelgava**, or **Cēsis**. Every saved property's technical details, sales, charts and PDF are locked, including fictional fixtures. Select **Iegādāties atskaiti**, then **Apmaksāt testa režīmā** in the local checkout. The form displays fixed, read-only test details that are never submitted. A separate processing screen walks through the simulated authorization and server confirmation before the selected report opens for 24 hours in the current browser. **Izmēģināt noraidītu maksājumu** and **Atcelt** leave it locked. No money is charged and no actual card data is requested. With JavaScript disabled, a manual confirmation button completes the processing step.
+
+Local simulation requires `APP_ENV=local` and `DEMO_PAYMENTS=true` in `.env` (enabled in `.env.example`). Run `php artisan config:clear` after changes. Production/staging ignore the switch, and simulated purchases are excluded from report authorization there. The public sample page shows a detached structural illustration, never details from a saved property.
 
 The seeded addresses and transactions are illustrative. They are not verified records, market valuations, or a connection to a live property registry. The application reads its own database; import records you are entitled to use to build your dataset.
 
@@ -80,7 +82,7 @@ Optional columns: `type` (`Dzīvoklis`, `Māja`, or `Zeme`), `area_m2`, `rooms`,
 php artisan properties:import /path/to/properties.csv
 ```
 
-`database/examples/properties.csv` shows the complete format with fictional records. Importing that file creates a normal, gated property so you can test checkout in Stripe test mode. It is not a source of real records. Imports cannot overwrite the public demo properties.
+`database/examples/properties.csv` shows the complete format with fictional records. Importing it creates another gated property. It is not a source of real records. Imports cannot overwrite the seeded fictional fixtures.
 
 Re-importing the same property/date/price/kind does not duplicate a sale. If a row fails validation, the entire file is rolled back. This command imports or updates records; it does not delete missing rows.
 
@@ -90,6 +92,7 @@ Use Stripe **test** credentials while developing:
 
 ```dotenv
 STRIPE_SECRET_KEY=sk_test_...
+DEMO_PAYMENTS=false
 STRIPE_WEBHOOK_SECRET=whsec_...
 APP_URL=http://localhost:3000
 ```
@@ -100,9 +103,9 @@ Forward local webhook events with the Stripe CLI:
 stripe listen --events checkout.session.completed,checkout.session.async_payment_succeeded --forward-to localhost:3000/stripe/webhook
 ```
 
-Copy the signing secret printed by this command into `.env`, clear configuration, import a non-demo property, and start checkout from its preview page. Configure the same events on the deployed webhook endpoint when going live.
+Copy the signing secret printed by this command into `.env`, disable demo payments, clear configuration, and start checkout from a property's preview page. Configure the same events on the deployed webhook endpoint when going live.
 
-Laravel sets the €9.99 amount on the server and verifies the Checkout session's identity, payment status, amount, currency, and property before unlocking the report. Webhooks require Stripe's signature; repeated events do not extend access. There is no fake payment fallback.
+Laravel sets the €9.99 amount on the server and verifies the Checkout session's identity, payment status, amount, currency, and property before unlocking the report. Webhooks require Stripe's signature; repeated events do not extend access. The local simulator is an explicit environment-gated mode, never a fallback for failed Stripe payments.
 
 Purchases are stored in the database. Ownership is tied to the current browser's server-side session, with a 24-hour report expiry. Clearing cookies or losing the session loses access; this small application has no accounts or cross-device recovery. The default session lifetime is 1,440 minutes. Professional and agency plans are contact enquiries, not implemented recurring subscriptions.
 
@@ -134,4 +137,4 @@ php artisan config:cache
 php artisan view:cache
 ```
 
-Do not seed demonstration records on a production dataset unless you want the public examples. Keep database backups. This version supports one application instance with local file sessions/cache; shared hosting across multiple instances requires shared stores.
+Do not seed fictional records on a production dataset unless you want those test properties listed. Keep database backups. This version supports one application instance with local file sessions/cache; shared hosting across multiple instances requires shared stores.

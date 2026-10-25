@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Property extends Model
 {
-    // is_demo changes paid access; only trusted seeding code may assign it explicitly.
+    // Only trusted seeding code may label records as fictional. It never unlocks a report.
     protected $fillable = ['address', 'city', 'cadastre_number', 'type', 'area_m2', 'rooms', 'floor', 'total_floors', 'construction_year', 'wall_material', 'land_area_m2'];
 
     protected function casts(): array
@@ -45,7 +45,9 @@ class Property extends Model
 
     public function reportIsAvailable(array $purchaseIds): bool
     {
-        return $this->is_demo || $this->purchases()->whereIn('id', $purchaseIds)
+        $providers = Purchase::demoPaymentsEnabled() ? ['stripe', 'demo'] : ['stripe'];
+
+        return $this->purchases()->whereIn('id', $purchaseIds)->whereIn('payment_provider', $providers)
             ->whereNotNull('paid_at')->where('expires_at', '>', now())->exists();
     }
 

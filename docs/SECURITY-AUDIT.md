@@ -6,7 +6,7 @@ Reviewed on **24 October 2026** against the running Laravel 12 application, inst
 
 Reviewed routes, controllers, models, imports, Blade output, sessions, filesystem configuration, Stripe checkout/webhooks, dependency advisories and selected local PHP settings. No production infrastructure, DNS, certificate, live Stripe account, SMTP service, Git history or backup service was available for verification.
 
-The app has **no user accounts, login/password-reset endpoints, API tokens, Sanctum/JWT installation, browser uploads or administrative HTTP writes**. Public property previews and fictional demo reports are intentional. A real report requires a purchase owned by the current server-side browser session, a verified payment and an unexpired access period. Account recovery and cross-device purchases are not implemented.
+The app has **no user accounts, login/password-reset endpoints, API tokens, Sanctum/JWT installation, browser uploads or administrative HTTP writes**. Every saved property, including fictional fixtures, requires a paid, unexpired purchase owned by the current server-side browser session before detailed data is returned. Public previews show only address, city and property type. Marketing report examples use separate illustrative values, never saved property records. Account recovery and cross-device purchases are not implemented.
 
 ## Findings, fixes and verification
 
@@ -19,13 +19,21 @@ Severity below is contextual; deployment-dependent risks are explicitly marked.
 | **Medium:** no CSP or framing/resource headers | An injected script has no browser policy limiting execution; an attacker can frame the report to trick users into clicking. | Global `SecurityHeaders` plus the exception response hook set CSP, DENY, nosniff, referrer and permissions headers. HSTS is sent on deployed HTTPS responses. Inline hero styling was replaced with an image/CSS class so CSP needs neither `unsafe-inline` nor `unsafe-eval`. | Header/error tests; browser checks; inspect production static/error responses with the edge configuration. CSP is defense in depth, not a replacement for escaping. |
 | **Medium:** unthrottled payment-status callback | A visitor repeatedly refreshes an owned checkout return URL, causing repeated authenticated Stripe API calls. | Named `checkout-status` limit: 10/minute/IP. Other named limits cover checkout (10), contact (5), search (60) and webhooks (120). | Callback test makes 10 fake requests, receives 429 on the next, and asserts no additional upstream call. |
 | **Medium:** contact/query validation accepts unexpected shapes until rendering | `subject[]=bad`, `q[]=bad` on a public page, or array-shaped flashed contact input causes a 500, and may expose a trace when debug is enabled. | Dedicated FormRequests validate scalar types/lengths; contact rendering and shared search components safely handle arrays. Pagination is bounded. Only validated search parameters are propagated. | Array-shaped query, shared-component and flashed-input tests; contact header-injection and escaped-output tests. |
-| **Low / preventive:** paid-access flags were mass assignable on Property | A future update endpoint using `fill()` could accidentally set `is_demo=true`, making a real report free. No such endpoint currently exists. | Removed `is_demo` from `$fillable`. Seeder explicitly assigns it only for newly created examples. Purchase payment/ownership fields remain excluded from mass assignment. | Mass-assignment test plus existing idempotent seed/import tests. |
+| **Low / preventive:** fixture labels were mass assignable on Property | A future update endpoint using `fill()` could incorrectly label a real record as fictional. No such endpoint currently exists. | Removed `is_demo` from `$fillable`; it is only a label and no longer bypasses payment. Purchase payment/ownership fields remain excluded from mass assignment. | Mass-assignment test plus existing idempotent seed/import and purchase-gate tests. |
 | **Preventive:** report authorization duplicated in controllers | A future controller might skip the ownership/expiry check while rendering paid transaction prices. Existing checks were already effective. | `PropertyPolicy::viewReport` and `PurchasePolicy::view` centralize the checks. Gates run server-side; undefined mutation abilities deny access. | Ownership, expiry, anonymous policy and undefined-action tests. |
 | **Low / robustness:** malformed upstream/payment JSON could cause a 500 | A malformed Stripe response or signed event supplies arrays where scalar IDs are expected. | Validate consumed nested fields after signature verification; reject non-array API responses. Do not follow upstream redirects while sending the Stripe bearer credential. Checkout destination remains restricted to Stripe's HTTPS checkout host. | Nested signed-event, malformed JSON, wrong amount/currency/property, forged-signature and redirect tests. |
 | **Preventive:** private disk allowed generated serving routes | Future temporary URLs could expose private material without the intended report policy. No upload/download route currently exists. | Disabled automatic serving for the private local disk; private visibility and storage errors enabled. No public storage symlink is required. | Private disk configuration and missing public URL tests. |
 | **Medium if deployed:** PHP runtime/settings are development defaults | PHP-level errors disclose paths; an attacker who finds a separate code-execution flaw can invoke OS commands. | Added a web-SAPI INI example and Nginx/Apache vhosts. **Host changes are not installed by this audit.** | Local CLI inspection found PHP **8.2.12**, `expose_php=1`, `display_errors=1`, no `open_basedir` or `disable_functions`. Apply the host profile and verify the actual web SAPI. |
 
 ## Controls already present and retained
+
+**Purchase-gate follow-up:** `DemoCheckoutController` provides an explicit local simulation behind `EnsureDemoPayments`. It requires both `APP_ENV=local`/`testing` and `DEMO_PAYMENTS=true`; production and staging cannot use it even when the switch is accidentally enabled. Each purchase has a server-assigned `payment_provider`. Simulated purchases cease granting access when local demo mode is disabled, while existing Stripe purchases retain their verified flow. The migration defaults existing purchases to `stripe`.
+
+An attacker could otherwise send a fake success request, reuse another browser's order, or request the report directly. The simulator checks session ownership, provider, CSRF and a strictly validated scalar outcome. Server code chooses property, price and expiry. Only success marks the purchase paid; failure/cancellation leave it locked. Confirmation rotates the session ID, and replay never extends the 24-hour expiry. Reports authorize before loading transactions; locked responses contain no hidden technical values or transaction prices. Production Stripe webhooks cannot complete simulated purchases.
+
+The reference-led checkout now has a separate preparation POST and processing GET before final confirmation. Preparation stores only the selected test scenario in the server session; neither preparation nor rendering the processing screen grants access. The final POST requires a matching prepared outcome. Displayed example card, email and name fields are fixed/read-only and have no form names, so no actual payment details are collected. The staged animation is presentation only; a no-JavaScript confirmation button uses the same server checks.
+
+Run `php artisan test --filter=DemoCheckoutTest` to verify direct-report denial, public-data isolation, fake success/failure/cancellation, ownership, production/mode-off denial, expiry/replay, malformed outcomes, CSRF and rate limits. In the local browser, open a property, buy its report, simulate rejection and confirm it stays locked; then simulate success and confirm details appear. This is a demonstration checkout, not proof of a real payment.
 
 **Runtime follow-up:** after the initial audit, the project received a verified, isolated PHP **8.4.27** installation and its localhost server was moved to that runtime. The suite and Composer platform checks pass there. The earlier PHP 8.2.12 finding records the initial XAMPP state; shared XAMPP and any production host were not upgraded. See [runtime setup](PHP-RUNTIME.md).
 
@@ -49,6 +57,7 @@ Severity below is contextual; deployment-dependent risks are explicitly marked.
 - `app/Policies/`: browser-session report and purchase authorization.
 - `app/Providers/AppServiceProvider.php`: policy registration, canonical URL generation and named rate limits.
 - `app/Http/Controllers/CheckoutController.php`: verified payment flow and signed nested event validation.
+- `app/Http/Controllers/DemoCheckoutController.php`, `EnsureDemoPayments` and `CompleteDemoPaymentRequest`: local-only simulated payment, ownership and outcome validation.
 - `config/filesystems.php`: private local storage without public serving.
 - `tests/Feature/SecurityTest.php` and `CheckoutTest.php`: executable attack/regression cases.
 
@@ -69,6 +78,7 @@ The original authentication config referenced a removed User model. It now uses 
    SESSION_LIFETIME=1440
    CACHE_STORE=file
    LOG_LEVEL=warning
+   DEMO_PAYMENTS=false
    MAIL_MAILER=smtp
    TRUSTED_PROXIES=
    ```
@@ -97,6 +107,7 @@ The original authentication config referenced a removed User model. It now uses 
 composer test
 php artisan test --filter=SecurityTest
 php artisan test --filter=CheckoutTest
+php artisan test --filter=DemoCheckoutTest
 composer audit
 php vendor/bin/pint --test
 ```

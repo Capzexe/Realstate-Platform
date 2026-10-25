@@ -23,6 +23,6 @@
             </article>
         @endforeach
     </div>
-    <div class="pricing-footnote"><span>Demonstrācijas atskaites bez maksas</span><span>Saglabājams
+    <div class="pricing-footnote"><span>Atskaites struktūras paraugs bez maksas</span><span>Saglabājams
             PDF</span><span>Vienkārša piekļuve šajā pārlūkā</span></div>
 </x-section>

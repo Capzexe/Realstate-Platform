@@ -32,6 +32,7 @@ class SecurityTest extends TestCase
                 ->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
             $policy = $response->headers->get('Content-Security-Policy');
             $this->assertStringContainsString("frame-ancestors 'none'", $policy);
+            $this->assertStringContainsString("media-src 'self'", $policy);
             $this->assertStringNotContainsString('unsafe-inline', $policy);
             $this->assertStringNotContainsString('unsafe-eval', $policy);
             $this->assertStringContainsString('no-store', $response->headers->get('Cache-Control'));
@@ -182,7 +183,7 @@ class SecurityTest extends TestCase
         $property = $this->property();
         $purchase = $property->purchases()->create();
         $purchase->markPaid();
-        $this->get(route('properties.report', $property))->assertForbidden()->assertHeader('Cache-Control', 'no-store, private');
+        $this->get(route('properties.report', $property))->assertRedirect(route('properties.show', $property))->assertHeader('Cache-Control', 'no-store, private');
         $this->assertFalse(Gate::allows('view', $purchase));
         $this->assertFalse(Gate::allows('update', $property));
         $this->assertFalse(Gate::allows('delete', $purchase));

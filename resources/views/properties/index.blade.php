@@ -7,19 +7,19 @@
     </x-hero>
     <x-section>
         <x-section-heading title="Meklēšanas rezultāti" align="left">
-            <p>Atrasti {{ $properties->total() }} īpašumi. Izvēlieties adresi, lai iepazītos ar pieejamo informāciju.</p>
+            <p>Rezultātu skaits: {{ $properties->total() }}. Izvēlieties adresi, lai iepazītos ar pieejamo informāciju.</p>
         </x-section-heading>
         <div class="results-list">
             @forelse ($properties as $property)
                 <article class="result-row">
                     <div>
                         <h3><a href="{{ route('properties.show', $property) }}">{{ $property->address }}</a></h3>
-                        <p>{{ $property->city }} · {{ $property->type }} · {{ $property->cadastre_number }}</p>
+                        <p>{{ $property->city }} · {{ $property->type }}</p>
                         @if ($property->is_demo)
                             <p class="small-note">Demonstrācijas īpašums ar ilustratīviem darījumiem.</p>
                         @endif
                     </div>
-                    <div><span>{{ $property->transactions_count }} darījumi</span><a class="text-link"
+                    <div><span>Informācija pēc atskaites iegādes</span><a class="text-link"
                             href="{{ route('properties.show', $property) }}">Apskatīt īpašumu <span
                                 aria-hidden="true">→</span></a></div>
                 </article>

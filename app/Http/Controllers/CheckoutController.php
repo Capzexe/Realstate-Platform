@@ -24,8 +24,17 @@ class CheckoutController extends Controller
         if (Gate::allows('viewReport', $property)) {
             return to_route('properties.report', $property);
         }
+
+        if (Purchase::demoPaymentsEnabled()) {
+            $purchase = new Purchase;
+            $purchase->payment_provider = 'demo'; // Set on the server, never from form input.
+            $property->purchases()->save($purchase);
+            $request->session()->push('purchase_ids', $purchase->id);
+
+            return to_route('checkout.demo.show', $purchase);
+        }
         if (! config('services.stripe.secret') || ! config('services.stripe.webhook_secret')) {
-            return to_route('properties.show', $property)->with('error', 'Norēķini šobrīd nav pieejami. Varat apskatīt bezmaksas demonstrācijas atskaiti.');
+            return to_route('properties.show', $property)->with('error', 'Norēķini šobrīd nav pieejami. Lūdzu, mēģiniet vēlāk.');
         }
 
         $purchase = $property->purchases()->create();
@@ -99,7 +108,7 @@ class CheckoutController extends Controller
                 return response('Invalid payload', 400);
             }
             $session = $payload['data']['object'];
-            $purchase = Purchase::where('checkout_session_id', $session['id'] ?? '')->first();
+            $purchase = Purchase::where('payment_provider', 'stripe')->where('checkout_session_id', $session['id'] ?? '')->first();
             if ($purchase && $this->matchesPaidPurchase($session, $purchase)) {
                 $purchase->markPaid();
             }
@@ -121,7 +130,8 @@ class CheckoutController extends Controller
             return false;
         }
 
-        return ($session['id'] ?? null) === $purchase->checkout_session_id
+        return $purchase->payment_provider === 'stripe'
+            && ($session['id'] ?? null) === $purchase->checkout_session_id
             && ($session['payment_status'] ?? null) === 'paid'
             && ($session['mode'] ?? null) === 'payment'
             && ($session['currency'] ?? null) === 'eur'

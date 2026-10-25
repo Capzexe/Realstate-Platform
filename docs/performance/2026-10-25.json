@@ -1,0 +1,73 @@
+{
+  "environment": "One local PHP development-server run per page, Lighthouse mobile simulation. Not Hostinger or field Core Web Vitals.",
+  "pages": [
+    {
+      "page": "home",
+      "url": "http://127.0.0.1:3101/",
+      "fetchedAt": "2026-10-25T20:41:50.728Z",
+      "scores": {
+        "performance": 70,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1237.724,
+          "display": "1.2 s"
+        },
+        "largest-contentful-paint": {
+          "value": 1821.7929999999997,
+          "display": "1.8 s"
+        },
+        "speed-index": {
+          "value": 5004.32344848785,
+          "display": "5.0 s"
+        },
+        "total-blocking-time": {
+          "value": 1369.6379999999997,
+          "display": "1,370 ms"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "display": "0"
+        }
+      },
+      "warnings": []
+    },
+    {
+      "page": "pricing",
+      "url": "http://127.0.0.1:3101/cenas",
+      "fetchedAt": "2026-10-25T20:42:09.225Z",
+      "scores": {
+        "performance": 72,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 2889.2145,
+          "display": "2.9 s"
+        },
+        "largest-contentful-paint": {
+          "value": 6776.143,
+          "display": "6.8 s"
+        },
+        "speed-index": {
+          "value": 2889.2145,
+          "display": "2.9 s"
+        },
+        "total-blocking-time": {
+          "value": 0,
+          "display": "0 ms"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "display": "0"
+        }
+      },
+      "warnings": []
+    }
+  ]
+}

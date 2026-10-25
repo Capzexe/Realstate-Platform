@@ -11,7 +11,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Check out source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -49,3 +49,33 @@ jobs:
 
       - name: Audit dependencies
         run: composer audit --locked
+
+      - name: Set up Node for browser checks only
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install browser tooling
+        run: |
+          npm ci
+          npm run browser:install -- --with-deps
+
+      - name: Check real browser purchase and validation flows
+        run: npm run test:browser
+
+      - name: Measure mobile Lighthouse performance (report, no score gate)
+        run: npm run perf
+
+      - name: Save browser evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: browser-report
+          path: |
+            playwright-report/
+            test-results/
+            artifacts/performance/
+            artifacts/review/
+          retention-days: 7
+          if-no-files-found: ignore

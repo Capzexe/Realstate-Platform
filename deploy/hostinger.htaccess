@@ -1,0 +1,41 @@
+# Install in public_html with the public assets only. Enable SSL and Force HTTPS in hPanel.
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+
+<FilesMatch "(^\.|\.(?:env|sqlite|sqlite3|sql|bak|ini|log|zip)$)">
+    Require all denied
+</FilesMatch>
+<FilesMatch "(?i)^(?!index\.php$).*\.php$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule ^storage(?:/|$) - [R=404,L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header onsuccess unset Content-Security-Policy
+    Header onsuccess unset X-Frame-Options
+    Header onsuccess unset X-Content-Type-Options
+    Header onsuccess unset Referrer-Policy
+    Header onsuccess unset Permissions-Policy
+    Header onsuccess unset Strict-Transport-Security
+    Header always unset X-Powered-By
+    Header always set Content-Security-Policy "default-src 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self' https://checkout.stripe.com; frame-src 'none'; upgrade-insecure-requests"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+<IfModule mod_mime.c>
+    AddType video/webm .webm
+    AddType text/vtt .vtt
+</IfModule>

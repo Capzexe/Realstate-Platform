@@ -7,10 +7,7 @@
                 <h1>Pārbaudiet īpašuma <mark>cenas, vēsturi</mark> un pieejamos datus.</h1>
                 <p>Vairāk skaidrības pirms darījuma. Īpašuma vēsture un tehniskā informācija vienā saprotamā atskaitē.</p>
                 <x-search-form />
-                <div class="search-examples"><span>Izmēģiniet:</span><a
-                        href="{{ route('properties.index', ['q' => 'Brīvības']) }}">Brīvības iela</a><a
-                        href="{{ route('properties.index', ['q' => 'Jelgava']) }}">Jelgava</a><a
-                        href="{{ route('properties.index', ['q' => 'Cēsis']) }}">Cēsis</a></div>
+                <x-address-suggestions :properties="$suggestedProperties" />
                 <div class="hero-includes">
                     <strong>Ko uzzināsiet atskaitē</strong>
                     <ul>
@@ -68,7 +65,7 @@
             </div>
             <div class="clarity-panel">
                 <h3>Precīzi ieraksti.<br>Saprotama aina.</h3>
-                <div class="clarity-search"><span>Īpašuma adrese</span><strong>Brīvības iela 64–12, Rīga</strong><span
+                <div class="clarity-search"><span>Īpašuma adrese</span><strong>Atskaites struktūras paraugs</strong><span
                         class="document-line"></span><span class="document-line short"></span></div>
                 <div class="clarity-dark"><span>Darījumu vēsture</span><strong>3 darījumi vienā pārskatā</strong>
                     <p>Datumi, reģistrētās summas un īpašuma parametri.</p>
@@ -84,7 +81,7 @@
         <p class="lead">Mazāk minējumu. Vairāk jautājumu, kuriem ir pamats.</p>
         <x-benefit-list :numbered="true" :items="[
             ['Ievadiet adresi vai kadastra numuru', 'Atrodiet īpašumu un apskatiet pieejamo informāciju.'],
-            ['Iepazīstieties ar atskaiti', 'Demonstrācijas pārskatos bez maksas redzēsiet, kā dati ir sakārtoti.'],
+            ['Iegādājieties atskaiti', 'Pabeidziet maksājumu, lai atvērtu tieši šī īpašuma datus.'],
             ['Saglabājiet svarīgāko', 'Izpētiet darījumu vēsturi un saglabājiet pārskatu kā PDF.'],
         ]" />
         <a class="button button-yellow" href="#property-search">Pārbaudīt īpašumu <span aria-hidden="true">→</span></a>
